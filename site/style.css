@@ -121,7 +121,7 @@ h3{margin:0 0 6px;font-size:19px;font-weight:900}
 
 .profile-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:24px;align-items:center}
 .pcard{border-radius:28px;overflow:hidden;background:var(--card);border:1px solid var(--card-b);box-shadow:0 20px 50px rgba(150,60,170,.25);max-width:440px;justify-self:center;width:100%}
-.pbanner img{width:100%;height:auto;aspect-ratio:2.38;object-fit:cover}
+.pbanner img{display:block;width:100%;height:auto;aspect-ratio:1.72;object-fit:cover}
 .pbody{padding:0 22px 22px;text-align:center}
 .pava{width:104px;height:104px;margin:-52px auto 10px;border-radius:50%;padding:4px;background:conic-gradient(from 0deg,#7b3fc4,#ff6fae,#ffd1f0,#7b3fc4);animation:spin 6s linear infinite}
 .pava img{width:100%;height:100%;border-radius:50%;border:3px solid var(--bg);animation:spin 6s linear infinite reverse}
@@ -212,3 +212,4 @@ h3{margin:0 0 6px;font-size:19px;font-weight:900}
   .chip{font-size:12px;padding:6px 9px}
   .win-body{grid-template-columns:1fr}.win-side{display:none}
 }
+@media (max-width:520px){.pava{margin-top:-40px}}
