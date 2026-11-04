@@ -26,6 +26,7 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html _site/
+          base64 -d site/assets/og.jpg.b64 > _site/og.jpg
           touch _site/.nojekyll
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
