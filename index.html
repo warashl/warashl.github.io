@@ -1,25 +1,668 @@
 <!doctype html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>TsundereGram — Telegram с характером</title>
-    <meta name="description" content="TsundereGram — неофициальный клиент Telegram для Android и Windows: режим призрака, сохранение удалённых сообщений, значки, баннеры, экспорт чатов, ИИ и ещё куча фишек." />
-    <meta name="theme-color" content="#000000" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="TsundereGram — Telegram с характером" />
-    <meta property="og:description" content="Неофициальный клиент Telegram для Android и Windows. Призрак, удалёнки, значки, баннеры, ИИ и ещё куча фишек." />
-    <meta property="og:image" content="https://warashl.github.io/assets/og.jpg" />
-    <meta property="og:url" content="https://warashl.github.io/" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" type="image/png" href="/assets/favicon.png" />
-    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://stream.mux.com" crossorigin />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+<meta charset="utf-8">
+<title>TsundereGram — Telegram с характером</title>
+<meta name="description" content="TsundereGram — неофициальный клиент Telegram для Android и Windows: режим призрака, удалённые сообщения, значки, баннеры, ИИ-помощник, экспорт чатов и ещё куча фишек.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ffffff">
+<meta property="og:type" content="website">
+<meta property="og:title" content="TsundereGram — Telegram с характером">
+<meta property="og:description" content="Неофициальный клиент Telegram для Android и Windows. Призрак, удалёнки, значки, баннеры, ИИ и ещё куча фишек.">
+<meta property="og:image" content="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261021_093215_b7826239-e451-4e15-b42b-d6bcf9497a32.png">
+<meta property="og:url" content="https://warashl.github.io/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 22'%3E%3Ccircle cx='4' cy='17' r='3.6' fill='%234d6a10'/%3E%3Cpath d='M10.5 18.5 16.8 5.2 25.5 18.5' fill='none' stroke='%234d6a10' stroke-width='5.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#121410;--olive:#4d6a10;--green:#6f9a0c;--lime:#b4cd52;--pill:#e7efcf;--line:#eef0ea;--bg:#fff;--radius:22px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:#e9eee0}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{font-family:"Inter Tight",system-ui,sans-serif;color:var(--ink);background:transparent;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img,video{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--lime);color:#151a08}
+
+/* общие компоненты */
+.pill{display:inline-flex;align-items:center;font-size:11px;font-weight:500;padding:5px 10px;border-radius:999px;background:var(--pill);color:#2c3a10;letter-spacing:.01em}
+.h2{font-size:clamp(26px,3.1vw,44px);font-weight:400;letter-spacing:-.03em;line-height:1.12;text-align:center}
+.h2 em{color:var(--olive);font-style:italic;font-weight:500}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 16px;border-radius:999px;background:var(--olive);color:#f3f8e4;font-size:13px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 2px 6px rgba(60,80,10,.25);transition:transform .3s,background .3s;border:0;cursor:pointer;font-family:inherit}
+.btn:hover{transform:translateY(-1px);background:#5a7c14}
+.btn.ghost{background:#fff;color:#2c3a10;box-shadow:0 0 0 1px #dfe6cf,0 2px 6px rgba(60,80,10,.08)}
+.btn.ghost:hover{background:#f6f9ee}
+.btn svg{width:15px;height:15px}
+.w{display:inline-block;will-change:transform,filter,opacity}
+.glass{position:absolute;border-radius:12px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.55);-webkit-backdrop-filter:blur(10px) saturate(1.2);backdrop-filter:blur(10px) saturate(1.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
+.grid-sq{position:absolute;border:1px solid #edf0e8;border-radius:10px;pointer-events:none}
+@keyframes driftA{to{transform:translateX(26px) translateY(4px)}}
+@keyframes driftB{to{transform:translateX(-30px) translateY(6px)}}
+.drift-a{animation:driftA 14s ease-in-out infinite alternate}
+.drift-b{animation:driftB 17s ease-in-out infinite alternate}
+.sub{font-size:14.5px;line-height:1.45;color:#3a3f33;max-width:540px;text-align:center}
+.sec-head{position:relative;z-index:4;display:flex;flex-direction:column;align-items:center;gap:16px;padding:0 16px;text-align:center}
+
+/* каркас и интро */
+.backdrop{position:fixed;inset:-40px;z-index:0;background:url("https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261021_093215_b7826239-e451-4e15-b42b-d6bcf9497a32.png") center 70%/cover;filter:blur(18px) saturate(1.1);transform:scale(1.3)}
+#app{position:relative;z-index:1;background:#fff;transform-origin:50% 50vh;overflow:clip}
+body.intro #app{transform:scale(.9);border-radius:28px}
+
+/* HERO */
+.hero{position:relative;height:100vh;min-height:620px;overflow:hidden;background:#fff}
+.nav{position:absolute;top:22px;left:50%;transform:translateX(-50%);z-index:20;display:flex;align-items:center;gap:44px;padding:5px 5px 5px 16px;border-radius:999px;background:rgba(255,255,255,.9);box-shadow:0 0 0 1px rgba(0,0,0,.05),0 6px 18px rgba(0,0,0,.06);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);white-space:nowrap}
+.brand{display:flex;align-items:center;gap:6px;font-size:22px;font-weight:500;letter-spacing:-.04em}
+.brand svg{width:30px;height:22px}
+.nav-links{display:flex;gap:24px;font-size:13px;font-weight:500;color:#3b4130}
+.nav-links a{transition:color .3s}
+.nav-links a:hover{color:var(--olive)}
+.cloud{position:absolute;z-index:3;pointer-events:none}
+.cloud img{width:100%}
+.cloud-l{top:-3%;left:-5%;width:min(44vw,640px)}
+.cloud-r{top:2%;right:-6%;width:min(42vw,620px)}
+#heroTitle{position:absolute;z-index:6;top:31%;left:0;width:100%;text-align:center;font-size:clamp(34px,5.2vw,76px);font-weight:400;letter-spacing:-.045em;line-height:1.04;padding:0 16px}
+#heroTitle em{color:var(--olive);font-style:italic;font-weight:500}
+.hero-media{position:absolute;left:0;right:0;bottom:0;height:72%;z-index:2;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 22%);mask-image:linear-gradient(to bottom,transparent 0,#000 22%)}
+.hero-media video{width:100%;height:100%;object-fit:cover;object-position:center 70%}
+.hero-glass{position:absolute;inset:0;z-index:5;pointer-events:none}
+
+/* STATS */
+.stats{position:relative;height:100vh;min-height:680px;overflow:hidden;background:#fff}
+.tree-wrap{position:absolute;z-index:2;left:50%;transform:translateX(-50%);bottom:-2%;width:min(340px,58vw)}
+.tree{width:100%}
+.stats-inner{position:relative;z-index:3;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:0 16px}
+.stats .h2{margin-bottom:18px}
+.cards{position:relative;z-index:4;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;width:min(880px,100%)}
+.card{height:150px;padding:18px 22px;border-radius:22px;background:var(--lime);display:flex;flex-direction:column;justify-content:space-between;-webkit-mask:radial-gradient(circle 17px at 0 55%,#0000 97%,#000) left/51% 100% no-repeat,radial-gradient(circle 17px at 100% 55%,#0000 97%,#000) right/51% 100% no-repeat;mask:radial-gradient(circle 17px at 0 55%,#0000 97%,#000) left/51% 100% no-repeat,radial-gradient(circle 17px at 100% 55%,#0000 97%,#000) right/51% 100% no-repeat}
+.card small{font-size:10.5px;font-weight:500;color:#2a3410}
+.card b{font-size:clamp(30px,3.4vw,44px);font-weight:600;letter-spacing:-.04em;color:#151a08;font-variant-numeric:tabular-nums}
+.cards-shadow{position:relative;z-index:3;width:min(820px,94%);height:10px;margin-top:-18px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.08),transparent)}
+.logos-wrap{position:relative;width:min(860px,100%);display:flex;justify-content:center}
+.band{position:absolute;z-index:5;left:50%;transform:translateX(-50%);top:-6px;width:min(340px,58vw);height:64px;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);background:rgba(255,255,255,.12);-webkit-mask-image:linear-gradient(90deg,transparent,#000 18%,#000 82%,transparent);mask-image:linear-gradient(90deg,transparent,#000 18%,#000 82%,transparent)}
+.logos{position:relative;z-index:6;display:flex;justify-content:space-between;align-items:center;gap:24px;width:min(860px,100%);padding:6px 10px;color:#151515}
+.logos span{display:inline-flex;align-items:center;gap:6px;font-size:21px;font-weight:700;letter-spacing:-.03em;white-space:nowrap}
+.logos .thin{font-weight:400}
+.logos .small{font-size:15px;font-weight:500}
+.logos svg{flex:0 0 auto}
+
+/* FEATURES */
+.features{position:relative;background:#fff;padding:18vh 4vw 16vh;overflow:hidden}
+.f-cloud{position:absolute;z-index:1;top:3vh;right:-7vw;width:min(32vw,460px);pointer-events:none;opacity:.95}
+.tabs{position:relative;z-index:4;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:30px 0 26px}
+.tab{font:inherit;font-size:13px;font-weight:500;height:34px;padding:0 14px;border-radius:999px;border:1px solid #e3e8d8;background:#fff;color:#2c3a10;cursor:pointer;transition:background .3s,border-color .3s,color .3s}
+.tab:hover{border-color:#cfd9b5}
+.tab.on{background:var(--olive);border-color:var(--olive);color:#f3f8e4}
+.fgrid{position:relative;z-index:4;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:min(1080px,100%);margin:0 auto}
+.feat{position:relative;padding:22px 22px 20px;border-radius:var(--radius);background:#fff;border:1px solid var(--line);transition:transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s,border-color .45s}
+.feat:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(60,80,10,.08);border-color:#e1e7d2}
+.feat .ic{width:42px;height:42px;border-radius:12px;background:var(--pill);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px}
+.feat h3{font-size:19px;font-weight:500;letter-spacing:-.03em;margin-bottom:8px}
+.feat p{font-size:14px;line-height:1.45;color:#2b2e27}
+.feat .tags{display:flex;gap:6px;margin-top:14px}
+.feat .tags span{font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:999px;background:#f3f6ea;color:var(--olive)}
+.feat .new{position:absolute;top:20px;right:20px;font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:999px;background:var(--olive);color:#f3f8e4}
+.feat.hl{background:var(--lime);border-color:transparent}
+.feat.hl .ic{background:rgba(255,255,255,.55)}
+.feat.hl .tags span{background:rgba(255,255,255,.55);color:#2a3410}
+.feat.hl p{color:#232a0e}
+.feat.hide{display:none}
+
+/* LOOP: режимы-аккордеон */
+.loop{position:relative;height:100vh;min-height:680px;overflow:hidden;background:#fff}
+.loop-cloud{position:absolute;z-index:3;top:4vh;left:-4vw;width:min(36vw,520px);pointer-events:none}
+.loop-cloud img{width:100%}
+.loop-cloud .glass{aspect-ratio:1}
+.loop-head{position:absolute;z-index:4;top:9vh;left:0;width:100%;display:flex;flex-direction:column;align-items:center;gap:16px;padding:0 16px}
+.track{position:absolute;z-index:2;inset:0;display:flex}
+.panel{position:relative;flex:0 0 clamp(96px,11vw,170px);height:100%;overflow:hidden;border-right:1px solid var(--line);cursor:pointer;outline:none;transition:flex-grow .9s cubic-bezier(.77,0,.18,1)}
+.panel:last-child{border-right:none}
+.panel.is-active{flex-grow:1;cursor:default}
+.panel-in{position:absolute;left:clamp(14px,1.8vw,28px);bottom:10vh;display:flex;align-items:flex-end;gap:clamp(16px,2vw,30px);width:max-content}
+.num{font-size:clamp(170px,36vh,380px);font-weight:600;line-height:.74;letter-spacing:-.07em}
+.panel:nth-child(1) .num{color:var(--olive)}
+.panel:nth-child(2) .num{color:var(--green)}
+.panel:nth-child(3) .num{color:var(--lime)}
+.step{position:relative;width:min(400px,30vw);padding-bottom:4px;opacity:0;transform:translateX(-24px);filter:blur(6px);transition:opacity .4s,transform .5s,filter .4s}
+.panel.is-active .step{opacity:1;transform:none;filter:none;transition:opacity .7s .4s,transform .9s .35s cubic-bezier(.2,.8,.2,1),filter .7s .4s}
+.step h3{font-size:clamp(20px,1.7vw,26px);font-weight:400;letter-spacing:-.03em;margin-bottom:12px}
+.step p{font-size:14px;line-height:1.4;color:#2b2e27}
+.step ul{list-style:none;margin-top:12px;display:flex;flex-wrap:wrap;gap:6px}
+.step li{font-size:11px;font-weight:500;padding:5px 10px;border-radius:999px;background:var(--pill);color:#2c3a10}
+.mini-cloud{position:absolute;left:-10%;bottom:calc(100% + clamp(70px,13vh,150px));width:min(18vw,250px);max-width:none;animation:driftA 9s ease-in-out infinite alternate;pointer-events:none}
+
+/* APPS: платформы */
+.apps{position:relative;background:#fff;padding:16vh 4vw 14vh;overflow:hidden}
+.app-grid{position:relative;z-index:4;display:grid;grid-template-columns:1fr 1fr;gap:14px;width:min(980px,100%);margin:40px auto 0}
+.app{position:relative;padding:30px 30px 28px;border-radius:26px;display:flex;flex-direction:column;gap:14px;min-height:330px}
+.app.android{background:var(--lime)}
+.app.windows{background:#fff;border:1px solid var(--line);box-shadow:0 24px 50px rgba(60,80,10,.07)}
+.app .top{display:flex;align-items:center;justify-content:space-between}
+.app .os{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.6)}
+.app.windows .os{background:var(--pill)}
+.app h3{font-size:clamp(24px,2.4vw,32px);font-weight:500;letter-spacing:-.04em;line-height:1.05}
+.app .meta{font-size:12.5px;font-weight:500;color:#3d4a16}
+.app p{font-size:14px;line-height:1.45;color:#232a0e;flex:1}
+.app.windows p{color:#2b2e27}
+.app .row{display:flex;flex-wrap:wrap;gap:8px}
+.app .note{font-size:11.5px;color:#4a5530;line-height:1.4}
+.app.windows .note{color:#6b7160}
+
+/* FAQ */
+.faq{position:relative;background:#fff;padding:12vh 4vw 18vh;overflow:hidden}
+.faq-list{position:relative;z-index:4;width:min(760px,100%);margin:36px auto 0;display:flex;flex-direction:column;gap:10px}
+.qa{border:1px solid var(--line);border-radius:18px;background:#fff;transition:border-color .3s,background .3s}
+.qa[open]{border-color:#dfe7cb;background:#fbfcf6}
+.qa summary{list-style:none;cursor:pointer;padding:18px 20px 18px 22px;font-size:17px;font-weight:500;letter-spacing:-.02em;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary i{position:relative;width:28px;height:28px;flex:0 0 28px;border-radius:50%;background:var(--pill);transition:transform .45s cubic-bezier(.2,.8,.2,1),background .3s}
+.qa summary i::before,.qa summary i::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;border-radius:2px;background:#2c3a10;transform:translate(-50%,-50%)}
+.qa summary i::after{transform:translate(-50%,-50%) rotate(90deg)}
+.qa[open] summary i{transform:rotate(45deg);background:var(--lime)}
+.qa .ans{padding:0 22px 20px;font-size:14.5px;line-height:1.5;color:#2b2e27}
+
+/* CTA */
+.cta{position:relative;height:110vh;min-height:720px;overflow:hidden;background:#fff}
+.cta-img{position:absolute;left:0;right:0;bottom:0;height:78%;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 24%);mask-image:linear-gradient(to bottom,transparent 0,#000 24%)}
+.cta-img img{width:100%;height:118%;object-fit:cover;object-position:center 60%}
+.petals{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+.petal{position:absolute;top:-20px;width:10px;height:8px;border-radius:80% 0 80% 0;background:#f6c4d6;opacity:.85;animation:fall linear infinite}
+@keyframes fall{to{transform:translate(var(--dx),110vh) rotate(540deg)}}
+.cta-card{position:absolute;z-index:4;left:50%;top:30%;transform:translateX(-50%);width:min(680px,calc(100% - 32px));padding:46px 28px 54px;text-align:center;border-radius:26px;background:linear-gradient(to bottom,rgba(255,255,255,.96) 0%,rgba(255,255,255,.75) 35%,rgba(255,255,255,.12) 100%);border:1px solid rgba(255,255,255,.7);-webkit-backdrop-filter:blur(16px) saturate(1.1);backdrop-filter:blur(16px) saturate(1.1);box-shadow:0 30px 60px rgba(10,20,60,.18)}
+.cta-card .h2{margin:16px 0 10px;font-size:clamp(24px,2.8vw,38px)}
+.cta-card p{font-size:14px;color:#1d2230;margin-bottom:20px}
+.cta-btns{display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+
+/* FOOTER */
+#footer{background:var(--lime);padding:34px 4vw 22px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;row-gap:22px}
+.f-logo{width:72px;height:72px}
+.f-logo svg{width:72px;height:72px;overflow:visible}
+.f-links{display:flex;gap:24px;font-size:13px;color:#1d240c}
+.f-links a:hover{text-decoration:underline}
+.f-social{display:flex;gap:16px;justify-self:end;color:#1d240c}
+.f-social svg{width:18px;height:18px}
+.f-social a{transition:opacity .3s}
+.f-social a:hover{opacity:.6}
+.f-copy{grid-column:1/-1;text-align:center;font-size:11px;color:#2a330f;line-height:1.5}
+
+/* адаптив */
+@media (max-width:1000px){.nav-links{display:none}}
+@media (max-width:900px){
+  .nav{gap:24px}
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .card{height:120px}
+  .logos{flex-wrap:wrap;justify-content:center;gap:14px 26px}
+  .logos span{font-size:17px}
+  .stats{height:auto;min-height:100vh;padding:90px 0 300px}
+  .stats-inner{height:auto}
+  .tree-wrap{bottom:0}
+  .band{display:none}
+  .fgrid{grid-template-columns:repeat(2,1fr)}
+  .app-grid{grid-template-columns:1fr}
+}
+@media (max-width:760px){
+  .hero{height:100svh;min-height:560px}
+  #heroTitle{top:26%}
+  .hero-media{height:66%;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 14%);mask-image:linear-gradient(to bottom,transparent 0,#000 14%)}
+  .hero-media video{object-position:38% 100%;transform:scale(1.12);transform-origin:50% 100%}
+  .cloud-l{width:70vw;left:-18vw;top:6%}
+  .cloud-r{width:66vw;right:-20vw;top:10%}
+  .nav{top:16px;gap:18px;padding-left:12px}
+  .brand{font-size:19px}
+  .loop{height:auto;min-height:0;padding:12vh 0 40px}
+  .loop-head{position:relative;top:auto}
+  .loop-cloud{width:62vw;left:-14vw;top:2vh;opacity:.9}
+  .track{position:relative;inset:auto;flex-direction:column;margin-top:40px}
+  .panel{flex:none;height:auto;overflow:visible;border-right:none;border-top:1px solid var(--line);cursor:auto}
+  .panel-in{position:relative;left:auto;bottom:auto;width:auto;padding:28px 16px;gap:18px}
+  .num{font-size:150px}
+  .step,.panel.is-active .step{opacity:1;transform:none;filter:none;width:auto}
+  .mini-cloud{display:none}
+  .features{padding:12vh 16px 10vh}
+  .f-cloud{width:60vw;right:-22vw;top:1vh}
+  .fgrid{grid-template-columns:1fr}
+  .apps{padding:10vh 16px}
+  .app{padding:24px 22px;min-height:0}
+  .faq{padding:8vh 16px 12vh}
+  .qa summary{font-size:16px}
+  .cta{height:auto;min-height:0;padding:60px 0 0}
+  .cta-img{position:relative;height:92vh;min-height:620px}
+  .cta-img img{object-position:30% 60%}
+  .cta-card{top:120px;padding:34px 18px 42px}
+  #footer{grid-template-columns:1fr;justify-items:center;text-align:center}
+  .f-social{justify-self:center}
+  .f-links{gap:18px;flex-wrap:wrap;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){.drift-a,.drift-b,.petal,.mini-cloud{animation:none}}
+</style>
+</head>
+<body class="intro">
+<div class="backdrop" aria-hidden="true"></div>
+<div id="app">
+
+<section class="hero" id="hero">
+  <nav class="nav" aria-label="Навигация">
+    <a class="brand" href="#hero" aria-label="TsundereGram — наверх">
+      <svg viewBox="0 0 30 22" aria-hidden="true"><circle cx="4" cy="17" r="3.6" fill="currentColor"/><path d="M10.5 18.5 16.8 5.2 25.5 18.5" fill="none" stroke="currentColor" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      tsunderegram
+    </a>
+    <div class="nav-links"><a href="#features">Фишки</a><a href="#loop">Режимы</a><a href="#apps">Платформы</a><a href="#faq">FAQ</a></div>
+    <a class="btn" href="#apps">Скачать за 0 ₽</a>
+  </nav>
+  <div class="cloud cloud-l" data-par="-60"><img class="drift-a" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261021_093216_44218665-b15e-4566-a2d4-2676ab03609d.png" alt=""></div>
+  <div class="cloud cloud-r" data-par="-90"><img class="drift-b" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261021_093215_0f37c0c3-f82c-485b-87dd-5a35b75a8782.png" alt=""></div>
+  <h1 id="heroTitle" class="split">Telegram с характером<br>и <em>кучей фишек.</em></h1>
+  <div class="hero-media">
+    <video id="heroVideo" autoplay muted loop playsinline preload="auto" poster="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261021_093215_b7826239-e451-4e15-b42b-d6bcf9497a32.png" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261021_093331_5998f443-1b9c-4b62-820c-8219c73c72c4.mp4"></video>
+  </div>
+  <div class="hero-glass" id="heroGlass"></div>
+</section>
+
+<section class="stats" id="stats">
+  <div class="sq-field" data-count="22"></div>
+  <div class="tree-wrap"><img id="tree" class="tree" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261021_093215_95f11900-c4a0-49ad-bb2d-bb927dd594ee.png" alt=""></div>
+  <div class="stats-inner">
+    <span class="pill reveal">Почему TsundereGram</span>
+    <h2 class="h2 split">Всё лучшее из Telegram —<br>и ещё сверху.</h2>
+    <div class="cards">
+      <div class="card"><small>Фишек сверх Telegram</small><b data-to="40" data-dec="0" data-suf="+">0+</b></div>
+      <div class="card"><small>Платформы: Android и ПК</small><b data-to="2" data-dec="0" data-suf="">0</b></div>
+      <div class="card"><small>Версия Telegram в основе</small><b data-to="13.1" data-dec="1" data-suf="">0</b></div>
+      <div class="card"><small>Бесплатно, без рекламы</small><b data-to="100" data-dec="0" data-suf="%">0%</b></div>
+    </div>
+    <div class="cards-shadow"></div>
+    <div class="logos-wrap">
+      <div class="band" id="band"></div>
+      <div class="logos">
+        <span><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.9 3.3 18.7 19.4c-.2 1.1-.9 1.4-1.8.9l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.4-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.3 13.2l-4.8-1.5c-1-.3-1.1-1 .2-1.5L20.5 2.9c.9-.3 1.6.2 1.4.4z"/></svg>Telegram</span>
+        <span class="thin">exteraGram</span>
+        <span><svg width="20" height="18" viewBox="0 0 20 18" aria-hidden="true"><path fill="currentColor" d="M10 0l3.2 5.6L20 6.4l-4.8 4.7L16.2 18 10 14.9 3.8 18l1-6.9L0 6.4l6.8-.8z"/></svg>AyuGram</span>
+        <span>Cloudflare</span>
+        <span class="small"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5z"/></svg>GitHub Actions</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="sq-field" data-count="16"></div>
+  <div class="f-cloud" data-par="-40"><img class="drift-b" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261021_093215_0f37c0c3-f82c-485b-87dd-5a35b75a8782.png" alt=""></div>
+  <div class="sec-head">
+    <span class="pill reveal">Возможности</span>
+    <h2 class="h2 split">Всё, чего не хватало<br>в <em>Telegram.</em></h2>
+    <p class="sub reveal">Мы собрали лучшее из exteraGram и AyuGram и добавили своё. Метки внизу карточки показывают, где фишка уже есть.</p>
+  </div>
+  <div class="tabs" role="tablist" aria-label="Категории фишек">
+    <button class="tab on" data-cat="all">Все</button>
+    <button class="tab" data-cat="privacy">Приватность</button>
+    <button class="tab" data-cat="tools">Инструменты</button>
+    <button class="tab" data-cat="social">Общение</button>
+    <button class="tab" data-cat="look">Оформление</button>
+  </div>
+  <div class="fgrid" id="fgrid">
+    <article class="feat" data-cat="privacy"><div class="ic">👻</div><h3>Режим призрака</h3><p>Читай без «прочитано», заходи без «в сети», пиши без «печатает». Истории тоже можно смотреть незаметно.</p><div class="tags"><span>Android</span><span>ПК</span></div></article>
+    <article class="feat" data-cat="privacy"><div class="ic">🗑️</div><h3>Удалённые сообщения</h3><p>Собеседник удалил сообщение? А у тебя оно осталось — с пометкой, что его удалили.</p><div class="tags"><span>Android</span><span>ПК</span></div></article>
+    <article class="feat" data-cat="privacy"><div class="ic">✏️</div><h3>История правок</h3><p>Видно, что было написано до редактирования. Ни одна правка не пройдёт незамеченной.</p><div class="tags"><span>Android</span><span>ПК</span></div></article>
+    <article class="feat hl" data-cat="tools"><span class="new">новое</span><div class="ic">📦</div><h3>Экспорт чатов</h3><p>Вся переписка в одном HTML-файле: открываешь в браузере — и это выглядит как настоящий чат, с фото, видео и голосовыми внутри.</p><div class="tags"><span>Android</span></div></article>
+    <article class="feat hl" data-cat="tools"><span class="new">новое</span><div class="ic">🎙️</div><h3>Голосовые в текст</h3><p>Расшифровка голосовых и кружков без Premium — сразу из коробки, через наш сервер или офлайн на устройстве.</p><div class="tags"><span>Android</span></div></article>
+    <article class="feat" data-cat="tools"><div class="ic">✨</div><h3>ИИ-помощник</h3><p>Ответы, пересказ длинных переписок и перевод прямо в чате — без платного Telegram AI.</p><div class="tags"><span>Android</span></div></article>
+    <article class="feat" data-cat="tools"><div class="ic">🌍</div><h3>Переводчик</h3><p>Перевод сообщений и целых чатов в пару нажатий.</p><div class="tags"><span>Android</span><span>ПК</span></div></article>
+    <article class="feat" data-cat="social"><div class="ic">📰</div><h3>Лента каналов</h3><p>Все посты из твоих каналов одной лентой, как в соцсети. Листай и не прыгай по чатам.</p><div class="tags"><span>Android</span></div></article>
+    <article class="feat" data-cat="social"><div class="ic">🎵</div><h3>Сейчас играет</h3><p>Трек, который ты слушаешь в Last.fm, — прямо в твоём профиле.</p><div class="tags"><span>Android</span></div></article>
+    <article class="feat" data-cat="look"><div class="ic">🎬</div><h3>Баннеры профиля</h3><p>Картинка или даже видео в шапке профиля. Видят все, у кого TsundereGram.</p><div class="tags"><span>Android</span><span>ПК</span></div></article>
+    <article class="feat" data-cat="look"><div class="ic">🎀</div><h3>Значки TsundereGram</h3><p>Значок разработчика, «малыша» или свой собственный рядом с ником. Нажми — и увидишь, за что он.</p><div class="tags"><span>Android</span><span>ПК</span></div></article>
+    <article class="feat" data-cat="look"><div class="ic">🌈</div><h3>Градиентные ники</h3><p>Имя, переливающееся двумя цветами, — в профиле и в чатах.</p><div class="tags"><span>Android</span><span>ПК</span></div></article>
+    <article class="feat" data-cat="look"><div class="ic">🖼️</div><h3>Рамки аватарок</h3><p>«Газетная вырезка», «Грозовая тучка», «Стеклянный пузырь» — и это только начало.</p><div class="tags"><span>Android</span></div></article>
+    <article class="feat" data-cat="look"><div class="ic">💧</div><h3>Liquid Glass и Material You</h3><p>Стеклянные панели, современные компоненты, свои цвета профиля и скругления аватарок.</p><div class="tags"><span>Android</span></div></article>
+    <article class="feat" data-cat="look"><div class="ic">🐱</div><h3>Иконки приложения</h3><p>Выбери иконку под настроение — от классики до кошкодевочки.</p><div class="tags"><span>Android</span><span>ПК</span></div></article>
+    <article class="feat" data-cat="privacy"><div class="ic">🕶️</div><h3>Режим стримера</h3><p>Прячет окно TsundereGram от записи экрана и трансляций — можно спокойно стримить.</p><div class="tags"><span>ПК</span></div></article>
+    <article class="feat" data-cat="privacy"><div class="ic">🛡️</div><h3>Менеджер прокси</h3><p>Список прокси с проверкой и быстрым переключением — Telegram работает даже там, где его глушат.</p><div class="tags"><span>Android</span></div></article>
+    <article class="feat" data-cat="tools"><div class="ic">🧹</div><h3>Фильтры сообщений</h3><p>Прячь сообщения по словам и регулярным выражениям: спам, реклама, надоедливые боты.</p><div class="tags"><span>ПК</span></div></article>
+    <article class="feat" data-cat="tools"><div class="ic">🧩</div><h3>Плагины</h3><p>Плагины в стиле exteraGram: расширяй клиент так, как хочется тебе.</p><div class="tags"><span>Android</span></div></article>
+    <article class="feat" data-cat="tools"><div class="ic">💾</div><h3>Бэкапы</h3><p>Импорт базы AyuGram и резервные копии настроек — переезд без боли.</p><div class="tags"><span>Android</span></div></article>
+    <article class="feat" data-cat="social"><div class="ic">💱</div><h3>Курсы валют</h3><p>Аккуратные «пилюли» с курсами валют и золота — всегда под рукой.</p><div class="tags"><span>Android</span></div></article>
+    <article class="feat" data-cat="social"><div class="ic">🗂️</div><h3>Своё боковое меню</h3><p>Оставь в меню только то, чем пользуешься.</p><div class="tags"><span>Android</span></div></article>
+    <article class="feat" data-cat="social"><div class="ic">🔆</div><h3>Glyph для Nothing</h3><p>Уведомления на задней панели Nothing Phone.</p><div class="tags"><span>Android</span></div></article>
+    <article class="feat" data-cat="social"><div class="ic">💬</div><h3>Анимации отправки</h3><p>Свои эффекты появления сообщений — от мягкого «всплытия» до пружинки, на любых сообщениях.</p><div class="tags"><span>Android</span></div></article>
+  </div>
+</section>
+
+<section class="loop" id="loop">
+  <div class="loop-cloud" data-par="-50">
+    <img class="drift-a" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261021_093216_44218665-b15e-4566-a2d4-2676ab03609d.png" alt="">
+    <span class="glass" style="left:6%;top:30%;width:15%"></span>
+    <span class="glass" style="left:23%;top:58%;width:13%"></span>
+    <span class="glass" style="left:38%;top:24%;width:13%"></span>
+  </div>
+  <div class="loop-head">
+    <span class="pill reveal">Режимы</span>
+    <h2 class="h2 split">Один переключатель —<br>и ты <em>невидимка.</em></h2>
+  </div>
+  <div class="track" id="track">
+    <div class="panel is-active" tabindex="0" aria-label="Режим 1: Призрак">
+      <div class="panel-in"><div class="num">1</div><div class="step">
+        <img class="mini-cloud" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261021_093215_0f37c0c3-f82c-485b-87dd-5a35b75a8782.png" alt="">
+        <h3>Призрак</h3><p>Тебя нет. Но ты всё видишь. Читай, заходи и смотри истории так, что никто об этом не узнает.</p>
+        <ul><li>Без «прочитано»</li><li>Без «в сети»</li><li>Без «печатает»</li><li>Тайные истории</li></ul>
+      </div></div>
+    </div>
+    <div class="panel" tabindex="0" aria-label="Режим 2: Шпион">
+      <div class="panel-in"><div class="num">2</div><div class="step">
+        <img class="mini-cloud" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261021_093216_44218665-b15e-4566-a2d4-2676ab03609d.png" alt="">
+        <h3>Шпион</h3><p>Ничто не исчезнет бесследно: удалённые сообщения и правки остаются у тебя — и хранятся только на твоём устройстве.</p>
+        <ul><li>Удалённые сообщения</li><li>История правок</li><li>Пометка удалённого</li></ul>
+      </div></div>
+    </div>
+    <div class="panel" tabindex="0" aria-label="Режим 3: Тишина">
+      <div class="panel-in"><div class="num">3</div><div class="step">
+        <img class="mini-cloud" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261021_093215_0f37c0c3-f82c-485b-87dd-5a35b75a8782.png" alt="">
+        <h3>Тишина</h3><p>Только то, что тебе нужно: фильтры по словам и регуляркам, никакой рекламы в каналах, режим стримера на ПК.</p>
+        <ul><li>Фильтры</li><li>Без рекламы</li><li>Режим стримера</li><li>Своё меню</li></ul>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="apps" id="apps">
+  <div class="sq-field" data-count="14"></div>
+  <div class="sec-head">
+    <span class="pill reveal">Платформы</span>
+    <h2 class="h2 split">Выбери свою <em>платформу.</em></h2>
+    <p class="sub reveal">Обе версии бесплатные. Вход — как в обычном Telegram: по номеру или QR-коду. Значки, баннеры и градиенты видны и на телефоне, и на компьютере.</p>
+  </div>
+  <div class="app-grid">
+    <div class="app android">
+      <div class="top"><span class="pill">Android</span><div class="os"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path fill="#2a3410" d="M17.6 9.48l1.84-3.18a.38.38 0 0 0-.66-.38l-1.86 3.22a11.4 11.4 0 0 0-9.84 0L5.22 5.92a.38.38 0 0 0-.66.38L6.4 9.48A10.8 10.8 0 0 0 1 18h22a10.8 10.8 0 0 0-5.4-8.52zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></svg></div></div>
+      <h3>TsundereGram<br>для Android</h3>
+      <div class="meta">APK · Android 7.0 и новее · ~100 МБ</div>
+      <p>На базе Telegram 13.1.1 и exteraGram. Ставится рядом с официальным Telegram — у него свой пакет, ничего не сломается.</p>
+      <div class="row"><a class="btn" href="https://github.com/warashl/warashl.github.io/releases/latest/download/TsundereGram.apk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg>Скачать APK</a><a class="btn ghost" href="https://github.com/warashl/warashl.github.io/releases" target="_blank" rel="noopener">Все версии</a></div>
+      <div class="note">Если Android спросит — разреши установку приложений из этого источника.</div>
+    </div>
+    <div class="app windows">
+      <div class="top"><span class="pill">Windows</span><div class="os"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path fill="#2c3a10" d="M2 4.4 10 3.3v7.9H2zm9-1.3L22 1.5v9.7H11zM2 12.2h8v7.9l-8-1.1zm9 0h11v9.7l-11-1.5z"/></svg></div></div>
+      <h3>TsundereGram<br>Desktop</h3>
+      <div class="meta">x64 · Windows 7, 8.1, 10, 11</div>
+      <p>Полноценный Telegram для компьютера — не веб-версия: звонки, папки, темы, несколько аккаунтов. Основан на AyuGram Desktop, со значками, градиентами и баннерами TsundereGram.</p>
+      <div class="row"><a class="btn" href="https://github.com/warashl/TsundereGram-Desktop/releases/latest/download/TsundereGram-Desktop-Setup-x64.exe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg>Установщик .exe</a><a class="btn ghost" href="https://github.com/warashl/TsundereGram-Desktop/releases/latest/download/TsundereGram-Desktop-x64.zip">Портативная .zip</a></div>
+      <div class="note">Если появится SmartScreen — «Подробнее» → «Выполнить в любом случае».</div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="sec-head">
+    <span class="pill reveal">FAQ</span>
+    <h2 class="h2 split">Частые <em>вопросы.</em></h2>
+  </div>
+  <div class="faq-list">
+    <details class="qa reveal"><summary>Это безопасно?<i></i></summary><div class="ans">TsundereGram работает через официальный API Telegram, как и любой сторонний клиент. Твои сообщения идут напрямую в Telegram, а наш сервер раздаёт только значки, баннеры и рамки — токен бота хранится на сервере, а не в приложении.</div></details>
+    <details class="qa reveal"><summary>Можно поставить рядом с обычным Telegram?<i></i></summary><div class="ans">Да. На Android у TsundereGram свой пакет, а на ПК — своя папка данных, так что официальный Telegram не пострадает.</div></details>
+    <details class="qa reveal"><summary>Удалённые сообщения видят все?<i></i></summary><div class="ans">Нет, только ты. Сохранённые удалённые сообщения и история правок хранятся локально на твоём устройстве.</div></details>
+    <details class="qa reveal"><summary>Как получить значок или баннер?<i></i></summary><div class="ans">Значки и баннеры выдаёт команда TsundereGram. После выдачи они появятся у всех пользователей TsundereGram на Android и ПК.</div></details>
+    <details class="qa reveal"><summary>Как сохранить переписку?<i></i></summary><div class="ans">Открой чат → меню ⋮ → «Экспорт чата». Получишь один HTML-файл: его можно открыть в любом браузере, и он выглядит как обычный чат — с аватарками, ответами, фото и голосовыми.</div></details>
+    <details class="qa reveal"><summary>Сколько это стоит?<i></i></summary><div class="ans">Нисколько. Без подписок и рекламы. Х-хватит спрашивать, просто пользуйся! 💢</div></details>
+  </div>
+</section>
+
+<section class="cta" id="cta">
+  <div class="sq-field" data-count="16"></div>
+  <div class="cta-img"><img id="ctaImg" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261021_093217_cc690198-ad8c-4127-8734-8485bd878351.png" alt="Ночная долина с цветущей сакурой"></div>
+  <div class="petals" id="petals"></div>
+  <div class="cta-card" id="ctaCard">
+    <span class="pill">Начать</span>
+    <h2 class="h2 split">Н-не то чтобы мы старались <em>ради тебя…</em></h2>
+    <p class="reveal">…просто так получилось. Скачай и попробуй — бесплатно, без рекламы и подписок.</p>
+    <div class="cta-btns reveal"><a class="btn" href="https://github.com/warashl/warashl.github.io/releases/latest/download/TsundereGram.apk">Скачать для Android</a><a class="btn ghost" href="https://github.com/warashl/TsundereGram-Desktop/releases/latest/download/TsundereGram-Desktop-Setup-x64.exe">Для Windows</a></div>
+  </div>
+</section>
+
+<footer id="footer">
+  <div class="f-logo" aria-label="TsundereGram">
+    <svg viewBox="0 0 80 80">
+      <circle id="fRing" cx="40" cy="40" r="37" fill="none" stroke="#111" stroke-width="2.4" stroke-dasharray="233" stroke-dashoffset="233" transform="rotate(-90 40 40)"/>
+      <circle class="fdot" cx="22" cy="40" r="4.5" fill="#111"/>
+      <circle class="fdot" cx="40" cy="40" r="4.5" fill="#111"/>
+      <circle class="fdot" cx="58" cy="40" r="4.5" fill="#111"/>
+      <path id="fMark" d="M33 53 43 31 56 53" fill="none" stroke="#111" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="60" stroke-dashoffset="60"/>
+    </svg>
+  </div>
+  <nav class="f-links" aria-label="Разделы"><a href="#features">Фишки</a><a href="#loop">Режимы</a><a href="#apps">Скачать</a><a href="#faq">FAQ</a></nav>
+  <div class="f-social">
+    <a href="https://github.com/warashl/TsundereGram-Desktop" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5z"/></svg></a>
+    <a href="https://github.com/warashl/warashl.github.io/releases" target="_blank" rel="noopener" aria-label="Android-версии"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.6 9.48l1.84-3.18a.38.38 0 0 0-.66-.38l-1.86 3.22a11.4 11.4 0 0 0-9.84 0L5.22 5.92a.38.38 0 0 0-.66.38L6.4 9.48A10.8 10.8 0 0 0 1 18h22a10.8 10.8 0 0 0-5.4-8.52zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></svg></a>
+    <a href="https://github.com/warashl/TsundereGram-Desktop/releases" target="_blank" rel="noopener" aria-label="Windows-версии"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M2 4.4 10 3.3v7.9H2zm9-1.3L22 1.5v9.7H11zM2 12.2h8v7.9l-8-1.1zm9 0h11v9.7l-11-1.5z"/></svg></a>
+  </div>
+  <div class="f-copy">© 2026 TsundereGram. Неофициальный клиент Telegram, не связан с Telegram FZ-LLC. Основан на открытом коде Telegram, exteraGram и AyuGram (GPL).</div>
+</footer>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+(function () {
+  var doc = document, body = doc.body;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var isMobile = innerWidth <= 760;
+  var $ = function (s, r) { return (r || doc).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || doc).querySelectorAll(s)); };
+  var rand = function (a, b) { return a + Math.random() * (b - a); };
+
+  // 2) слова в <span class="w"> (внутрь <em> тоже), <br> остаётся
+  function splitNode(node) {
+    Array.prototype.slice.call(node.childNodes).forEach(function (n) {
+      if (n.nodeType === 3) {
+        var parts = n.nodeValue.split(/(\s+)/), frag = doc.createDocumentFragment();
+        parts.forEach(function (p) {
+          if (!p) return;
+          if (/^\s+$/.test(p)) { frag.appendChild(doc.createTextNode(' ')); return; }
+          var s = doc.createElement('span'); s.className = 'w'; s.textContent = p; frag.appendChild(s);
+        });
+        node.replaceChild(frag, n);
+      } else if (n.nodeType === 1 && n.tagName !== 'BR') {
+        splitNode(n);
+      }
+    });
+  }
+  $$('.split').forEach(splitNode);
+
+  // 3) поля с квадратиками
+  $$('.sq-field').forEach(function (f) {
+    f.setAttribute('style', 'position:absolute;inset:0 0 auto 0;height:42%;z-index:1;pointer-events:none;-webkit-mask-image:linear-gradient(#000,transparent);mask-image:linear-gradient(#000,transparent)');
+    var n = +f.getAttribute('data-count') || 0;
+    for (var i = 0; i < n; i++) {
+      var s = doc.createElement('div'); s.className = 'grid-sq';
+      var col = Math.floor(Math.random() * 30), row = Math.floor(Math.random() * 6);
+      s.style.cssText = 'left:' + (col * 48 - 10) + 'px;top:' + (row * 48 + 6) + 'px;width:46px;height:46px';
+      f.appendChild(s);
+      if (window.gsap && !reduce) gsap.fromTo(s, { opacity: 0 }, { opacity: 1, duration: 1.2, yoyo: true, repeat: -1, delay: rand(0, 4), repeatDelay: rand(0, 3) });
+    }
+  });
+
+  // 4) стеклянные квадраты в hero
+  var glassPos = [[3,64],[3,71],[6.5,71],[10,71],[3,78],[-1,70],[45.5,76],[49,80],[49,76],[52.5,76],[86,58],[86,67],[82,76],[89.5,76],[86,84]];
+  var heroGlass = $('#heroGlass');
+  glassPos.forEach(function (p, i) {
+    var g = doc.createElement('span'); g.className = 'glass';
+    var size = p[0] > 40 && p[0] < 60 ? 'clamp(28px,3.4vw,44px)' : 'clamp(36px,5.4vw,74px)';
+    g.style.cssText = 'left:' + p[0] + '%;top:' + p[1] + '%;width:' + size + ';aspect-ratio:1';
+    if (isMobile && i % 2 === 1) g.style.display = 'none';
+    heroGlass.appendChild(g);
+  });
+  function flicker() {
+    if (!window.gsap || reduce) return;
+    $$('#heroGlass .glass').forEach(function (g) {
+      gsap.to(g, { opacity: .15, duration: .9, yoyo: true, repeat: -1, ease: 'sine.inOut', delay: rand(0, 3), repeatDelay: rand(1, 4) });
+    });
+  }
+
+  // 5) лепестки
+  var petals = $('#petals');
+  for (var k = 0; k < 18; k++) {
+    var pe = doc.createElement('span'); pe.className = 'petal';
+    pe.style.left = rand(0, 100) + '%';
+    pe.style.setProperty('--dx', rand(-80, 80).toFixed(0) + 'px');
+    pe.style.animationDuration = rand(9, 18).toFixed(1) + 's';
+    pe.style.animationDelay = (-rand(0, 15)).toFixed(1) + 's';
+    pe.style.scale = rand(.6, 1.4).toFixed(2);
+    petals.appendChild(pe);
+  }
+
+  // вкладки фишек
+  var tabs = $$('.tab'), feats = $$('.feat');
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      tabs.forEach(function (x) { x.classList.toggle('on', x === t); });
+      var cat = t.getAttribute('data-cat'), shown = [];
+      feats.forEach(function (f) {
+        var on = cat === 'all' || f.getAttribute('data-cat') === cat;
+        f.classList.toggle('hide', !on);
+        if (on) shown.push(f);
+      });
+      if (window.gsap) gsap.fromTo(shown, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .5, stagger: .03, ease: 'power3.out', overwrite: true });
+      if (window.ScrollTrigger) ScrollTrigger.refresh();
+    });
+  });
+
+  // без библиотек — просто показываем страницу
+  if (!window.gsap || !window.ScrollTrigger) {
+    body.classList.remove('intro');
+    var bd = $('.backdrop'); if (bd) bd.remove();
+    $$('.panel').forEach(function (p) {
+      ['mouseenter', 'focus', 'click'].forEach(function (ev) { p.addEventListener(ev, function () { $$('.panel').forEach(function (x) { x.classList.toggle('is-active', x === p); }); }); });
+    });
+    $$('.card b').forEach(function (b) { b.textContent = (+b.getAttribute('data-to')).toFixed(+b.getAttribute('data-dec')) + b.getAttribute('data-suf'); });
+    return;
+  }
+
+  // 1) плагины
+  gsap.registerPlugin(ScrollTrigger);
+
+  // 6) Lenis
+  var lenis = null;
+  if (window.Lenis) {
+    lenis = new Lenis({ duration: 1.25, easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); }, smoothWheel: true });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
+    gsap.ticker.lagSmoothing(0);
+  }
+  $$('a[href^="#"]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var id = a.getAttribute('href');
+      if (id.length < 2 || !$(id)) return;
+      e.preventDefault();
+      if (lenis) lenis.scrollTo(id, { duration: 1.6 }); else $(id).scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // 7) интро: страница «выезжает» из размытого пейзажа
+  var heroWords = $$('#heroTitle .w');
+  gsap.set('.nav', { xPercent: -50, x: 0 });
+  gsap.set('#ctaCard', { xPercent: -50, x: 0 });
+
+  function finishIntro() {
+    body.classList.remove('intro');
+    gsap.set('#app', { clearProps: 'all' });
+    var bd = $('.backdrop'); if (bd) bd.remove();
+    if (lenis) lenis.start();
+    flicker();
+    setupScroll();
+  }
+
+  if (reduce) {
+    finishIntro();
+  } else {
+    if (lenis) lenis.stop();
+    gsap.set(heroWords, { opacity: 0, y: 24, filter: 'blur(10px)' });
+    gsap.set('.nav', { opacity: 0, y: -16 });
+    gsap.timeline({ delay: .25, onComplete: finishIntro })
+      .fromTo('#app', { scale: .9, borderRadius: 28 }, { scale: 1, borderRadius: 0, duration: 1.4, ease: 'expo.inOut' })
+      .to('.nav', { opacity: 1, y: 0, duration: .8, ease: 'power3.out' }, '-=.5')
+      .to(heroWords, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1, stagger: .07, ease: 'power3.out' }, '-=.7')
+      .from('.cloud-l', { x: -120, opacity: 0, duration: 1.6, ease: 'power3.out' }, .4)
+      .from('.cloud-r', { x: 120, opacity: 0, duration: 1.6, ease: 'power3.out' }, .4)
+      .from('#heroGlass .glass', { opacity: 0, scale: .6, duration: .6, stagger: { each: .05, from: 'random' }, ease: 'back.out(2)' }, '-=1');
+  }
+
+  function setCounters(p) {
+    $$('.card b').forEach(function (b) {
+      var to = parseFloat(b.getAttribute('data-to')), dec = +b.getAttribute('data-dec');
+      b.textContent = (to * p).toFixed(dec) + b.getAttribute('data-suf');
+    });
+  }
+
+  // 8) всё, что завязано на скролл
+  function setupScroll() {
+    var heroST = { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true };
+    gsap.to('#heroTitle', { yPercent: -60, ease: 'none', scrollTrigger: heroST });
+    $$('.hero [data-par]').forEach(function (el) {
+      gsap.to(el, { y: (+el.getAttribute('data-par')) * 2, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
+    });
+    gsap.to('.hero-media', { yPercent: 8, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
+    gsap.to('.f-cloud', { y: -80, ease: 'none', scrollTrigger: { trigger: '#features', start: 'top bottom', end: 'bottom top', scrub: true } });
+
+    $$('.reveal').forEach(function (el) {
+      gsap.from(el, { opacity: 0, y: 16, duration: .8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%' } });
+    });
+    $$('#stats .split, #features .split, #loop .split, #apps .split, #faq .split, #cta .split').forEach(function (el) {
+      gsap.from($$('.w', el), { opacity: 0, y: 22, filter: 'blur(8px)', duration: .9, stagger: .06, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 80%' } });
+    });
+
+    // карточки фишек и платформ
+    gsap.set('.feat', { opacity: 0, y: 26 });
+    ScrollTrigger.batch('.feat', { start: 'top 90%', once: true, onEnter: function (b) { gsap.to(b, { opacity: 1, y: 0, duration: .8, stagger: .06, ease: 'power3.out', overwrite: true }); } });
+    gsap.from('.app', { y: 50, opacity: 0, duration: 1, stagger: .12, ease: 'power3.out', scrollTrigger: { trigger: '.app-grid', start: 'top 80%' } });
+
+    var mm = gsap.matchMedia();
+    mm.add('(min-width: 901px)', function () {
+      gsap.from('.card', { y: 40, opacity: 0, stagger: .08, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: '.cards', start: 'top 70%' } });
+      var proxy = { p: 0 };
+      gsap.timeline({ scrollTrigger: { trigger: '#stats', start: 'top top', end: '+=120%', pin: true, scrub: 1 } })
+        .to(proxy, { p: 1, ease: 'none', onUpdate: function () { setCounters(proxy.p); } }, 0)
+        .fromTo('#tree', { yPercent: 75 }, { yPercent: 6, ease: 'none' }, 0);
+    });
+    mm.add('(max-width: 900px)', function () {
+      gsap.from('.card', { y: 30, opacity: 0, stagger: .08, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: '.cards', start: 'top 85%' } });
+      var proxy = { p: 0 };
+      gsap.to(proxy, { p: 1, duration: 2, ease: 'power2.out', onUpdate: function () { setCounters(proxy.p); }, scrollTrigger: { trigger: '.cards', start: 'top 80%' } });
+      gsap.fromTo('#tree', { yPercent: 40 }, { yPercent: 0, ease: 'none', scrollTrigger: { trigger: '#stats', start: 'top bottom', end: 'bottom bottom', scrub: true } });
+    });
+    mm.add('(min-width: 761px)', function () {
+      var panels = $$('.panel'), off = [];
+      panels.forEach(function (p) {
+        var on = function () { panels.forEach(function (x) { x.classList.toggle('is-active', x === p); }); };
+        ['mouseenter', 'focus', 'click'].forEach(function (ev) { p.addEventListener(ev, on); off.push([p, ev, on]); });
+      });
+      gsap.from('.panel-in', { y: 120, opacity: 0, duration: 1.1, stagger: .12, ease: 'power3.out', scrollTrigger: { trigger: '#loop', start: 'top 60%' } });
+      gsap.to('.loop-cloud', { x: 60, ease: 'none', scrollTrigger: { trigger: '#loop', start: 'top bottom', end: 'bottom top', scrub: true } });
+      return function () { off.forEach(function (o) { o[0].removeEventListener(o[1], o[2]); }); };
+    });
+    mm.add('(max-width: 760px)', function () {
+      $$('.panel').forEach(function (p) {
+        gsap.from(p.children[0].children, { y: 40, opacity: 0, duration: .9, stagger: .1, ease: 'power3.out', scrollTrigger: { trigger: p, start: 'top 85%' } });
+      });
+    });
+
+    gsap.fromTo('#ctaImg', { yPercent: -12 }, { yPercent: 0, ease: 'none', scrollTrigger: { trigger: '#cta', start: 'top bottom', end: 'bottom bottom', scrub: true } });
+    gsap.from('#ctaCard', { y: 80, scale: .94, opacity: 0, filter: 'blur(10px)', duration: 1.2, ease: 'power3.out', scrollTrigger: { trigger: '#cta', start: 'top 60%' } });
+
+    // логотип в футере: точки прыгают, сливаются в знак, вокруг рисуется кольцо
+    var dots = $$('.fdot');
+    gsap.timeline({ scrollTrigger: { trigger: '#footer', start: 'top 92%' } })
+      .to(dots, { y: -8, duration: .25, stagger: .08, yoyo: true, repeat: 3, ease: 'sine.inOut' })
+      .to(dots, { attr: { cx: 27, cy: 50 }, y: 0, duration: .45, ease: 'power3.inOut' })
+      .to([dots[1], dots[2]], { opacity: 0, duration: .1 })
+      .to('#fMark', { strokeDashoffset: 0, duration: .6, ease: 'power3.out' }, '-=.05')
+      .to(dots[0], { attr: { r: 5.5 }, duration: .6, ease: 'back.out(3)' }, '<')
+      .to('#fRing', { strokeDashoffset: 0, duration: .9, ease: 'power2.inOut' }, '-=.3');
+
+    ScrollTrigger.refresh();
+  }
+  addEventListener('load', function () { ScrollTrigger.refresh(); });
+})();
+</script>
+</body>
 </html>
