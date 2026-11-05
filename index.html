@@ -32,8 +32,6 @@ nav{position:relative;z-index:3;display:flex;align-items:center;justify-content:
 .brand .ava{width:24px;height:24px}
 nav .lnk{color:#4b3358;text-decoration:none;transition:color .2s}
 nav .lnk:hover{color:var(--acc)}
-.signin{background:var(--pill);color:#fff;padding:10px 21px;border-radius:999px;font-weight:500;margin-left:10px;text-decoration:none;transition:transform .25s;display:inline-block}
-.signin:hover{transform:translateY(-1px)}
 .copy{position:absolute;z-index:3;left:50%;top:24.5%;transform:translateX(-50%);text-align:center;width:min(92vw,720px)}
 .copy h1{font-weight:500;letter-spacing:-.035em;line-height:1.04;font-size:clamp(38px,3.75vw,68px)}
 .copy h1 span{display:block;color:var(--mute)}
@@ -70,8 +68,6 @@ nav .lnk:hover{color:var(--acc)}
 .card p{margin-top:8px;font-size:14px;line-height:1.45;color:#76657f;flex:1}
 .tags{margin-top:16px;display:flex;gap:6px}
 .tags b{font-weight:500;font-size:11.5px;color:#555;border:1px solid rgba(17,17,17,.13);border-radius:999px;padding:3px 9px}
-.new{position:absolute;top:18px;right:18px;font-size:11px;font-weight:500;color:#fff;background:var(--pill);border-radius:999px;padding:4px 10px;isolation:isolate}
-.new::before{content:"";position:absolute;left:12%;right:12%;bottom:-4px;height:9px;border-radius:50%;background:var(--glow);filter:blur(6px);opacity:.8;z-index:-1}
 .card.hide{display:none}
 .more-wrap{display:none;margin-top:18px;text-align:center}
 .more{font:inherit;font-size:13.5px;font-weight:500;background:transparent;cursor:pointer}
@@ -105,6 +101,12 @@ nav .lnk:hover{color:var(--acc)}
 .btn.line{border:1px solid rgba(94,37,144,.22);color:var(--ink)}
 .btn.line:hover{border-color:var(--acc);color:var(--acc)}
 .btn:hover{transform:translateY(-1px)}
+.btn.big{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-size:15px;font-weight:600;padding:15px 28px 15px 24px;letter-spacing:-.005em}
+.btn.big svg{width:19px;height:19px;flex:none;fill:currentColor}
+.btn.big small{font-size:12.5px;font-weight:500;opacity:.72;padding-left:10px;margin-left:2px;border-left:1px solid rgba(255,255,255,.35)}
+.app .row .btn.big{min-width:230px}
+.final .btn.big{padding:16px 32px 16px 28px;font-size:15.5px;box-shadow:0 14px 34px -14px rgba(0,0,0,.55)}
+.final .btn.big:hover{box-shadow:0 18px 40px -14px rgba(225,120,231,.55)}
 .note{margin-top:16px;font-size:12px;color:var(--mute);line-height:1.45}
 
 .faq{max-width:760px;margin:0 auto}
@@ -150,7 +152,6 @@ footer small{flex-basis:100%;font-size:12px;color:var(--mute);line-height:1.5;pa
   nav{justify-content:space-between;padding:22px 18px 0}
   nav .lnk{display:none}
   .brand{margin-right:0}
-  .signin{margin-left:0}
   .copy{top:20%}
   .logos{gap:14px 24px;font-size:13px}
   .app{padding:24px}
@@ -217,12 +218,11 @@ footer small{flex-basis:100%;font-size:12px;color:var(--mute);line-height:1.5;pa
     <a class="lnk" href="#modes">Режимы</a>
     <a class="lnk" href="#download">Скачать</a>
     <a class="lnk" href="#faq">Вопросы</a>
-    <a class="signin" href="#download">Скачать</a>
   </nav>
   <div class="copy">
     <h1><span>Telegram,</span>но с характером.</h1>
     <p>Не ещё один мессенджер, а&nbsp;Telegram, в&nbsp;котором есть всё, чего тебе не&nbsp;хватало.</p>
-    <div class="cta"><a href="#download">Скачать бесплатно</a></div>
+    <div class="cta"><a href="#download">Скачать</a></div>
   </div>
   <div class="logos" aria-label="Работает с">
     <span><svg viewBox="0 0 20 20"><path d="M19 2.2 1.2 9.3c-.7.3-.7 1.2 0 1.4l4.6 1.5L16 5.4 7.6 13l.3 5.1c0 .5.7.7 1 .3l2.6-3 4.3 3.2c.5.3 1.1.1 1.2-.5L20 3.2c.1-.7-.4-1.2-1-1z"/></svg>Telegram</span>
@@ -278,9 +278,9 @@ footer small{flex-basis:100%;font-size:12px;color:var(--mute);line-height:1.5;pa
   <div class="apps">
     <div class="app rv">
       <div class="top"><i class="ava" role="img" aria-label="Иконка TsundereGram"></i><div><div class="os">Android</div><h3>TsundereGram</h3></div></div>
-      <div class="meta">APK · Android 7.0 и новее · ~100 МБ</div>
+      <div class="meta">APK · Android 7.0 и новее</div>
       <p>На базе Telegram 13.1.1. Ставится рядом с официальным Telegram — у него свой пакет, ничего не сломается.</p>
-      <div class="row"><a class="btn dark" href="https://github.com/warashl/warashl.github.io/releases/latest/download/TsundereGram.apk">Скачать APK</a><a class="btn line" href="https://github.com/warashl/warashl.github.io/releases" target="_blank" rel="noopener">Все версии</a></div>
+      <div class="row"><a class="btn dark big" href="https://github.com/warashl/warashl.github.io/releases/latest/download/TsundereGram.apk"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.5a1 1 0 0 1 1 1v7.1l2.3-2.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L9 10.6V3.5a1 1 0 0 1 1-1zM4 15.5a1 1 0 0 1 1 1h10a1 1 0 1 1 0 2H5a2 2 0 0 1-2-2 1 1 0 0 1 1-1z"/></svg><span>Скачать APK</span><small>~100 МБ</small></a></div>
       <div class="note">Если Android спросит — разреши установку приложений из этого источника.</div>
     </div>
     <div class="perks rv">
@@ -313,7 +313,7 @@ footer small{flex-basis:100%;font-size:12px;color:var(--mute);line-height:1.5;pa
     <i class="ava" role="img" aria-label="TsundereGram"></i>
     <h2 class="h2"><span>Н-не то чтобы мы старались</span>ради тебя…</h2>
     <p class="lead">Просто скачай. Бесплатно, без рекламы и подписок.</p>
-    <div class="row"><a class="btn dark" href="https://github.com/warashl/warashl.github.io/releases/latest/download/TsundereGram.apk">Скачать для Android</a><a class="btn line" href="https://github.com/warashl/warashl.github.io/releases" target="_blank" rel="noopener">Все версии</a></div>
+    <div class="row"><a class="btn dark big" href="https://github.com/warashl/warashl.github.io/releases/latest/download/TsundereGram.apk"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5.6 2.2l1.5 2.5A7.4 7.4 0 0 0 2.6 11h14.8a7.4 7.4 0 0 0-4.5-6.3l1.5-2.5-.8-.5-1.6 2.6a7.6 7.6 0 0 0-4 0L6.4 1.7zM6.8 7.2a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm6.4 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM2.6 12h14.8v4.6a2 2 0 0 1-2 2H4.6a2 2 0 0 1-2-2z"/></svg><span>Скачать для Android</span></a></div>
   </div>
 </section>
 
@@ -334,18 +334,23 @@ document.body.classList.remove('no-js');
   ['privacy','Режим призрака','Читай без «прочитано», заходи без «в сети», пиши без «печатает». Истории тоже можно смотреть незаметно.','AП'],
   ['privacy','Удалённые сообщения','Собеседник удалил сообщение? А у тебя оно осталось — с пометкой, что его удалили.','AП'],
   ['privacy','История правок','Видно, что было написано до редактирования. Ни одна правка не пройдёт незамеченной.','AП'],
-  ['tools','Экспорт чатов','Вся переписка в одном HTML-файле: открываешь в браузере — и это выглядит как настоящий чат, с фото, видео и голосовыми внутри.','A',1],
-  ['tools','Голосовые в текст','Расшифровка голосовых и кружков без Premium — сразу из коробки, через наш сервер или офлайн на устройстве.','A',1],
+  ['tools','Экспорт чатов','Вся переписка в одном HTML-файле, который выглядит как настоящий чат: фото, видео, голосовые и кружки, поиск, переход к дате и светлая тема.','A'],
+  ['tools','Голосовые в текст','Расшифровка голосовых и кружков без Premium — сразу из коробки, через наш сервер или офлайн на устройстве.','A'],
   ['tools','ИИ-помощник','Ответы, пересказ длинных переписок и перевод прямо в чате — без платного Telegram AI.','A'],
   ['tools','Переводчик','Перевод сообщений и целых чатов в пару нажатий.','AП'],
   ['social','Лента каналов','Все посты из твоих каналов одной лентой, как в соцсети. Листай и не прыгай по чатам.','A'],
   ['social','Сейчас играет','Трек, который ты слушаешь в Last.fm, — прямо в твоём профиле.','A'],
   ['look','Баннеры профиля','Картинка или даже видео в шапке профиля. Видят все, у кого TsundereGram.','AП'],
   ['look','Значки TsundereGram','Значок разработчика, «малыша» или свой собственный рядом с ником. Нажми — и увидишь, за что он.','AП'],
-  ['look','Градиентные ники','Имя, переливающееся двумя цветами, — в профиле и в чатах.','AП'],
+  ['look','Градиентные ники','Имя в два цвета, которые могут плавно переливаться, — в профиле, в чатах и в списке чатов.','AП'],
+  ['look','Свои пузыри','Цвет и прозрачность твоих сообщений. Другие пользователи TsundereGram тоже видят их в твоём стиле.','A'],
+  ['look','Жидкое стекло','Матовое стекло в меню сообщений и панели реакций, а по нижней панели скользит стеклянная линза.','A'],
+  ['look','Любые шрифты','Загрузи свой TTF или OTF или выбери шрифт из Google Fonts — для всего приложения.','A'],
   ['look','Рамки аватарок','«Газетная вырезка», «Грозовая тучка», «Стеклянный пузырь» — и это только начало.','A'],
   ['look','Иконки приложения','Выбери иконку под настроение — от классики до кошкодевочки.','AП'],
+  ['look','Музыкальный плеер','Своя обложка, расположение кнопок и цвета плеера.','A'],
   ['tools','Плагины','Расширяй клиент так, как хочется тебе: подключай плагины и добавляй своё.','A'],
+  ['tools','Бэкап и обмен темой','Настройки сохраняются в «Избранное» и вернутся после переустановки, а оформлением можно поделиться с другом одним файлом.','A'],
   ['social','Курсы валют','Аккуратные «пилюли» с курсами валют и золота — всегда под рукой.','A'],
   ['social','Своё боковое меню','Оставь в меню только то, чем пользуешься.','A'],
   ['social','Glyph для Nothing','Уведомления на задней панели Nothing Phone.','A'],
@@ -353,7 +358,7 @@ document.body.classList.remove('no-js');
   ];
   var g=document.getElementById('grid'),h='';
   F.forEach(function(f,i){
-        h+='<article class="card rv" data-c="'+f[0]+'"><div class="n">'+(i<9?'0':'')+(i+1)+'</div>'+(f[4]?'<span class="new">новое</span>':'')+'<h3>'+f[1]+'</h3><p>'+f[2]+'</p></article>';
+        h+='<article class="card rv" data-c="'+f[0]+'"><div class="n">'+(i<9?'0':'')+(i+1)+'</div>'+'<h3>'+f[1]+'</h3><p>'+f[2]+'</p></article>';
   });
   g.innerHTML=h;
   document.getElementById('more').textContent='Показать все '+F.length+' фишек';
