@@ -206,6 +206,14 @@ footer small{flex-basis:100%;font-size:12px;color:var(--mute);line-height:1.5;pa
 }
 @media (hover:none){.card:hover,.btn:hover,.cta:hover a,.signin:hover{transform:none}.card:hover{box-shadow:none;border-color:var(--line)}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.rv{transition:none;opacity:1;transform:none}}
+.tgl{display:inline-flex;align-items:center;gap:7px;margin-top:18px;font-size:13px;color:#4b3358;text-decoration:none;opacity:.85;transition:color .2s,opacity .2s}
+.tgl svg{width:15px;height:15px;fill:currentColor}
+.tgl:hover{color:var(--acc);opacity:1}
+.copy .tgl{display:flex;justify-content:center;width:max-content;margin-left:auto;margin-right:auto}
+.perks a,.ans a{color:var(--acc);text-decoration:none}
+.perks a:hover,.ans a:hover{text-decoration:underline}
+.final .btn.line{color:#fff;border-color:rgba(255,255,255,.35)}
+.final .btn.line:hover{border-color:#fff;color:#fff}
 </style>
 </head>
 <body class="no-js">
@@ -218,11 +226,13 @@ footer small{flex-basis:100%;font-size:12px;color:var(--mute);line-height:1.5;pa
     <a class="lnk" href="#modes">Режимы</a>
     <a class="lnk" href="#download">Скачать</a>
     <a class="lnk" href="#faq">Вопросы</a>
+    <a class="lnk" href="https://t.me/tsunderegram" target="_blank" rel="noopener">Канал</a>
   </nav>
   <div class="copy">
     <h1><span>Telegram,</span>но с характером.</h1>
     <p>Не ещё один мессенджер, а&nbsp;Telegram, в&nbsp;котором есть всё, чего тебе не&nbsp;хватало.</p>
     <div class="cta"><a href="#download">Скачать</a></div>
+    <a class="tgl" href="https://t.me/tsunderegram" target="_blank" rel="noopener"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M19 2.2 1.2 9.3c-.7.3-.7 1.2 0 1.4l4.6 1.5L16 5.4 7.6 13l.3 5.1c0 .5.7.7 1 .3l2.6-3 4.3 3.2c.5.3 1.1.1 1.2-.5L20 3.2c.1-.7-.4-1.2-1-1z"/></svg><span>Наш канал — @tsunderegram</span></a>
   </div>
   <div class="logos" aria-label="Работает с">
     <span><svg viewBox="0 0 20 20"><path d="M19 2.2 1.2 9.3c-.7.3-.7 1.2 0 1.4l4.6 1.5L16 5.4 7.6 13l.3 5.1c0 .5.7.7 1 .3l2.6-3 4.3 3.2c.5.3 1.1.1 1.2-.5L20 3.2c.1-.7-.4-1.2-1-1z"/></svg>Telegram</span>
@@ -280,14 +290,14 @@ footer small{flex-basis:100%;font-size:12px;color:var(--mute);line-height:1.5;pa
       <div class="top"><i class="ava" role="img" aria-label="Иконка TsundereGram"></i><div><div class="os">Android</div><h3>TsundereGram</h3></div></div>
       <div class="meta">APK · Android 7.0 и новее</div>
       <p>На базе Telegram 13.1.1. Ставится рядом с официальным Telegram — у него свой пакет, ничего не сломается.</p>
-      <div class="row"><a class="btn dark big" href="https://github.com/warashl/warashl.github.io/releases/latest/download/TsundereGram.apk"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.5a1 1 0 0 1 1 1v7.1l2.3-2.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L9 10.6V3.5a1 1 0 0 1 1-1zM4 15.5a1 1 0 0 1 1 1h10a1 1 0 1 1 0 2H5a2 2 0 0 1-2-2 1 1 0 0 1 1-1z"/></svg><span>Скачать APK</span><small>~100 МБ</small></a></div>
+      <div class="row"><a class="btn dark big" href="https://github.com/warashl/warashl.github.io/releases/latest/download/TsundereGram.apk"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.5a1 1 0 0 1 1 1v7.1l2.3-2.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.4L9 10.6V3.5a1 1 0 0 1 1-1zM4 15.5a1 1 0 0 1 1 1h10a1 1 0 1 1 0 2H5a2 2 0 0 1-2-2 1 1 0 0 1 1-1z"/></svg><span>Скачать APK</span><small>~100 МБ</small></a><a class="btn line big" href="https://t.me/tsunderegram" target="_blank" rel="noopener"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M19 2.2 1.2 9.3c-.7.3-.7 1.2 0 1.4l4.6 1.5L16 5.4 7.6 13l.3 5.1c0 .5.7.7 1 .3l2.6-3 4.3 3.2c.5.3 1.1.1 1.2-.5L20 3.2c.1-.7-.4-1.2-1-1z"/></svg><span>Канал в Telegram</span></a></div>
       <div class="note">Если Android спросит — разреши установку приложений из этого источника.</div>
     </div>
     <div class="perks rv">
       <div><span><b>Бесплатно навсегда</b> — без подписок и рекламы от нас.</span></div>
       <div><span><b>Рядом с Telegram</b> — официальный клиент остаётся на месте.</span></div>
       <div><span><b>Твой аккаунт</b> — вход по номеру или QR, все чаты на месте.</span></div>
-      <div><span><b>Обновления</b> — новые версии выходят в релизах на GitHub.</span></div>
+      <div><span><b>Обновления</b> — новости и новые версии в канале <a href="https://t.me/tsunderegram" target="_blank" rel="noopener">@tsunderegram</a>.</span></div>
     </div>
   </div>
 </section>
@@ -303,6 +313,7 @@ footer small{flex-basis:100%;font-size:12px;color:var(--mute);line-height:1.5;pa
     <details class="qa"><summary>Удалённые сообщения видят все?<i></i></summary><div class="ans">Нет, только ты. Сохранённые удалённые сообщения и история правок хранятся локально на твоём устройстве.</div></details>
     <details class="qa"><summary>Как получить значок или баннер?<i></i></summary><div class="ans">Значки и баннеры выдаёт команда TsundereGram. После выдачи их увидят все пользователи TsundereGram.</div></details>
     <details class="qa"><summary>Как сохранить переписку?<i></i></summary><div class="ans">Открой чат → меню ⋮ → «Экспорт чата». Получишь один HTML-файл: его можно открыть в любом браузере, и он выглядит как обычный чат — с аватарками, ответами, фото и голосовыми.</div></details>
+    <details class="qa"><summary>Где следить за обновлениями?<i></i></summary><div class="ans">В нашем канале <a href="https://t.me/tsunderegram" target="_blank" rel="noopener">@tsunderegram</a> — там новые версии и новости, а в сообществе канала можно задать вопрос или сообщить о баге.</div></details>
     <details class="qa"><summary>Сколько это стоит?<i></i></summary><div class="ans">Нисколько. Без подписок и рекламы. Х-хватит спрашивать, просто пользуйся! 💢</div></details>
   </div>
 </section>
@@ -313,7 +324,7 @@ footer small{flex-basis:100%;font-size:12px;color:var(--mute);line-height:1.5;pa
     <i class="ava" role="img" aria-label="TsundereGram"></i>
     <h2 class="h2"><span>Н-не то чтобы мы старались</span>ради тебя…</h2>
     <p class="lead">Просто скачай. Бесплатно, без рекламы и подписок.</p>
-    <div class="row"><a class="btn dark big" href="https://github.com/warashl/warashl.github.io/releases/latest/download/TsundereGram.apk"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5.6 2.2l1.5 2.5A7.4 7.4 0 0 0 2.6 11h14.8a7.4 7.4 0 0 0-4.5-6.3l1.5-2.5-.8-.5-1.6 2.6a7.6 7.6 0 0 0-4 0L6.4 1.7zM6.8 7.2a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm6.4 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM2.6 12h14.8v4.6a2 2 0 0 1-2 2H4.6a2 2 0 0 1-2-2z"/></svg><span>Скачать для Android</span></a></div>
+    <div class="row"><a class="btn dark big" href="https://github.com/warashl/warashl.github.io/releases/latest/download/TsundereGram.apk"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5.6 2.2l1.5 2.5A7.4 7.4 0 0 0 2.6 11h14.8a7.4 7.4 0 0 0-4.5-6.3l1.5-2.5-.8-.5-1.6 2.6a7.6 7.6 0 0 0-4 0L6.4 1.7zM6.8 7.2a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm6.4 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM2.6 12h14.8v4.6a2 2 0 0 1-2 2H4.6a2 2 0 0 1-2-2z"/></svg><span>Скачать для Android</span></a><a class="btn line big tgbtn" href="https://t.me/tsunderegram" target="_blank" rel="noopener"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M19 2.2 1.2 9.3c-.7.3-.7 1.2 0 1.4l4.6 1.5L16 5.4 7.6 13l.3 5.1c0 .5.7.7 1 .3l2.6-3 4.3 3.2c.5.3 1.1.1 1.2-.5L20 3.2c.1-.7-.4-1.2-1-1z"/></svg><span>@tsunderegram</span></a></div>
   </div>
 </section>
 
@@ -322,6 +333,7 @@ footer small{flex-basis:100%;font-size:12px;color:var(--mute);line-height:1.5;pa
   <div class="fl">
     <a href="#features">Фишки</a><a href="#modes">Режимы</a><a href="#download">Скачать</a><a href="#faq">Вопросы</a>
     <a href="https://github.com/warashl/warashl.github.io/releases" target="_blank" rel="noopener">Релизы</a>
+    <a href="https://t.me/tsunderegram" target="_blank" rel="noopener">Telegram-канал</a>
   </div>
   <small>© 2026 TsundereGram. Неофициальный клиент Telegram, не связан с Telegram FZ-LLC. Основан на открытом коде Telegram (GPL).</small>
 </footer>
@@ -344,8 +356,6 @@ document.body.classList.remove('no-js');
   ['look','Значки TsundereGram','Значок разработчика, «малыша» или свой собственный рядом с ником. Нажми — и увидишь, за что он.','AП'],
   ['look','Градиентные ники','Имя в два цвета, которые могут плавно переливаться, — в профиле, в чатах и в списке чатов.','AП'],
   ['look','Свои пузыри','Цвет и прозрачность твоих сообщений. Другие пользователи TsundereGram тоже видят их в твоём стиле.','A'],
-  ['look','Жидкое стекло','Матовое стекло в меню сообщений и панели реакций, а по нижней панели скользит стеклянная линза.','A'],
-  ['look','Любые шрифты','Загрузи свой TTF или OTF или выбери шрифт из Google Fonts — для всего приложения.','A'],
   ['look','Рамки аватарок','«Газетная вырезка», «Грозовая тучка», «Стеклянный пузырь» — и это только начало.','A'],
   ['look','Иконки приложения','Выбери иконку под настроение — от классики до кошкодевочки.','AП'],
   ['look','Музыкальный плеер','Своя обложка, расположение кнопок и цвета плеера.','A'],
