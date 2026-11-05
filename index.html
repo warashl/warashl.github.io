@@ -384,6 +384,13 @@ document.body.classList.remove('no-js');
   var fA=document.createElement('canvas'),fB=document.createElement('canvas');
   var xA=fA.getContext('2d',{willReadFrequently:true}),xB=fB.getContext('2d',{willReadFrequently:true});
   var W,H,DPR,step,rowStep,cols,rows,R,seeds,tiles=null,dotFill=null;
+  /* phones: hands sit at the button level (as on desktop), not below it */
+  var ancY=0,ancHW=0,ancHH=0,subB=0,PORT=false;
+  function anchor(){
+    var hr=hero.getBoundingClientRect(),a=document.querySelector('.cta a'),sp=document.querySelector('.copy p');
+    if(a){var r=a.getBoundingClientRect();ancY=r.top-hr.top+r.height/2;ancHW=r.width/2;ancHH=r.height/2}
+    if(sp){subB=sp.getBoundingClientRect().bottom-hr.top}
+  }
   function fract(x){return x-Math.floor(x)}
   function hash(a,b){return fract(Math.sin(a*127.1+b*311.7)*43758.5453)}
   function clamp(x,a,b){return x<a?a:x>b?b:x}
@@ -394,7 +401,8 @@ document.body.classList.remove('no-js');
     W=cv.clientWidth||hero.clientWidth;H=cv.clientHeight||hero.clientHeight;
     DPR=Math.min(2,window.devicePixelRatio||1);
     cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);
-    step=Math.max(5,W/205);rowStep=step*2.05;
+    PORT=H>W;anchor();
+    step=PORT?Math.max(2.8,W/135):Math.max(5,W/205);rowStep=step*(PORT?1.6:2.05);
     cols=Math.ceil(W/step);rows=Math.ceil(H/rowStep);R=step*.46;
     fA.width=fB.width=cols;fA.height=fB.height=rows;
     seeds=new Float32Array(cols*rows);
@@ -405,12 +413,20 @@ document.body.classList.remove('no-js');
 
   function drawHand(g,tile,left,t,portrait){
     var a=TAU*t/LOOP,ph=left?0:Math.PI;
-    var hw=W*(portrait?.66:.53),hh=hw*(.40*1520)/(.47*2688);
-    var cy=H*(portrait?.66:.54);
+    var hw=W*(portrait?.74:.53),hh=hw*(.40*1520)/(.47*2688);
+    var cy=H*.54;
     var reach=(.035*Math.sin(a+ph)+.012*Math.sin(2*a+1.3+ph))*W;
     var sc=1+.07*Math.sin(a+.9+ph);
     var rot=(left?1:-1)*.045*Math.sin(a+2.1+ph);
     var x=left?reach-W*.045:W-hw+W*.045-reach;
+    if(portrait){
+      /* narrow screen: fingertips reach the button from both sides, arms go off-screen */
+      cy=ancY?Math.max(ancY,subB+hh*.48):H*.45;
+      var tip=(ancHW?W/2-ancHW:W*.26)-3;
+      reach=(.016*Math.sin(a+ph)+.006*Math.sin(2*a+1.3+ph)-.012)*W;
+      sc=1+.05*Math.sin(a+.9+ph);rot=(left?1:-1)*.035*Math.sin(a+2.1+ph);
+      x=left?tip-.91*hw+reach:W-tip-.04*hw-reach;
+    }
     var px=left?0:W;
     g.setTransform(cols/W,0,0,rows/H,0,0);
     g.translate(px,cy);g.rotate(rot);g.scale(sc,sc);g.translate(-px,-cy);
@@ -426,21 +442,25 @@ document.body.classList.remove('no-js');
     var pairs=[[xA,tiles.LA,tiles.RA],[xB,tiles.LB,tiles.RB]];
     for(var p=0;p<2;p++){
       var g=pairs[p][0];
-      g.setTransform(1,0,0,1,0,0);g.fillStyle='#fff';g.fillRect(0,0,cols,rows);
+      g.setTransform(1,0,0,1,0,0);g.globalCompositeOperation='source-over';g.fillStyle='#fff';g.fillRect(0,0,cols,rows);
       g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';
+      /* darken: the white box of one hand must not erase the other hand's fingers */
+      g.globalCompositeOperation='darken';
       drawHand(g,pairs[p][1],true,t,portrait);
       drawHand(g,pairs[p][2],false,t,portrait);
+      g.setTransform(1,0,0,1,0,0);g.globalCompositeOperation='source-over';
     }
     var dA=xA.getImageData(0,0,cols,rows).data,dB=xB.getImageData(0,0,cols,rows).data;
     var tick=Math.floor(t*7);
     var mL=mixAt(t,6.2,14.6,1.6),mR=mixAt(t,2.4,10.4,1.6);
-    var qw=portrait?.44:.2,qc=portrait?.33:.385,half=cols/2;
+    var qw=.2,qc=.385,qh=.085,half=cols/2;
+    if(portrait&&ancY){qw=(ancHW/W)/.85+.012;qc=ancY/H;qh=(ancHH/H)/.85+4/H}
     ctx.fillStyle=dotFill||'#3d1655';ctx.beginPath();
     for(var j=0;j<rows;j++){
       var shift=0;
       if(hash(j,tick)>.965)shift=Math.round((hash(tick,j)-.5)*8);
       var yy=(j+.5)*rowStep;
-      var ey=(yy/H-qc)/.085;
+      var ey=(yy/H-qc)/qh;
       for(var i=0;i<cols;i++){
         var si=clamp(i-shift,0,cols-1);
         var seed=seeds[j*cols+i];
@@ -486,6 +506,8 @@ document.body.classList.remove('no-js');
   img.src=SHEET;
 
   resize();
+  setTimeout(resize,1300);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){resize()});
   var rz=0,lastW=0;
   window.addEventListener('resize',function(){cancelAnimationFrame(rz);rz=requestAnimationFrame(resize)});
   var visible=true;
