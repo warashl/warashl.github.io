@@ -833,6 +833,13 @@ body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:40vh;z-inde
 html,body{overflow-x:hidden;overflow-x:clip;max-width:100%}
 .fx-top{right:max(14px,env(safe-area-inset-right))!important;left:auto!important}
 @media (max-width:760px){.fx-top{right:max(12px,env(safe-area-inset-right))!important;bottom:calc(18px + env(safe-area-inset-bottom))!important}}
+
+/* секретки на телефоне: заголовок и аватарки не выделяются и не вызывают меню при зажатии */
+.copy h1,.ava,.brand,.fx-peek{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+.copy h1{touch-action:manipulation}
+.copy h1.fx-bk{animation:fxBk .18s ease-out}
+@keyframes fxBk{50%{transform:scale(.985)}}
+@media (prefers-reduced-motion:reduce){.copy h1.fx-bk{animation:none}}
 </style>
 
 </head>
@@ -2470,7 +2477,7 @@ document.body.classList.remove('no-js');
 <script>
 /* ===== СЕКРЕТКИ (3 штуки) =====
    1) «Аватарка» — 7 быстрых тапов по любой аватарке
-   2) «Бака»     — набрать на клавиатуре baka / бака
+   2) «Бака»     — набрать на клавиатуре baka / бака (на телефоне — 4 быстрых тапа по заголовку)
    3) «Терпение» — зажать заголовок на первом экране на 2 секунды
    4) «Любопытство» — открыть все ответы в «Вопросах»
    5) «Бездна» — в самом низу продолжать крутить вниз
@@ -2637,6 +2644,14 @@ document.body.classList.remove('no-js');
     buf=(buf+e.key.toLowerCase()).slice(-4);
     if(buf==='baka'||buf==='бака'||buf===',frf'){buf='';found('baka')}
   });
+  /* на телефоне клавиатуры нет: «бака» = 4 быстрых тапа по заголовку (б-а-к-а) */
+  var bt=0,bn=0,h1b=document.querySelector('.copy h1');
+  if(h1b)h1b.addEventListener('pointerup',function(e){
+    if(e.pointerType==='mouse')return;
+    var now=Date.now();if(now-bt>450)bn=0;bt=now;bn++;
+    h1b.classList.remove('fx-bk');void h1b.offsetWidth;h1b.classList.add('fx-bk');
+    if(bn>=4){bn=0;found('baka')}
+  });
   /* --- триггер 3: зажать заголовок 2 секунды --- */
   var h1=document.querySelector('.copy h1');
   if(h1){
@@ -2650,7 +2665,7 @@ document.body.classList.remove('no-js');
     });
     addEventListener('pointermove',function(e){if(ht&&Math.abs(e.clientX-hx)+Math.abs(e.clientY-hy)>14)stop()},{passive:true});
     addEventListener('pointerup',stop);addEventListener('pointercancel',stop);addEventListener('scroll',function(){if(ht)stop()},{passive:true});
-    h1.addEventListener('contextmenu',function(e){if(ring)e.preventDefault()});
+    h1.addEventListener('contextmenu',function(e){e.preventDefault()});
   }
 })();
 </script>
